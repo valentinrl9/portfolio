@@ -39,7 +39,7 @@ export default function Home() {
         </div>
 
         <p className="text-xl mb-6">
-          Soy desarrollador web en crecimiento, con experiencia en frontend y backend...
+          Soy desarrollador web en crecimiento, con conocmientos tanto en frontend como en backend...
         </p>
 
         <div className="flex flex-col sm:flex-row justify-center gap-4 mt-6">
@@ -55,7 +55,7 @@ export default function Home() {
       </section>
 
       {/* 🔘 Botones de navegación */}
-      <section className="mt-16 flex flex-wrap justify-center gap-6">
+      <section className="flex flex-wrap justify-center gap-6">
         {[
           { section: 'sobre', label: '👤 Sobre mí' },
           { section: 'proyectos', label: '🛠️ Proyectos' },
