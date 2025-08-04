@@ -57,7 +57,7 @@ const Contacto = () => (
 
       <ContactoCard
         tipo="GitHub"
-        icono={<img src="/img/github.png" alt="GitHub icon" className="w-full h-full object-contain" />}
+        icono={<img src="/img/Github.png" alt="GitHub icon" className="w-full h-full object-contain" />}
         detalle="Échale un vistazo a mis proyectos y repositorios públicos, así podrás saber cómo trabajo."
         link="https://github.com/valentinrl9"
       />
