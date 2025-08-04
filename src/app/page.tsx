@@ -53,13 +53,14 @@ export default function Home() {
 
         <div className="flex flex-col sm:flex-row justify-center gap-4 mt-6">
           <a
-            href="/CV%20Valen%202025.pdf"
+            href="https://drive.google.com/uc?export=download&id=1XE0tXNUKZUl0fq7fSwP7-ooMKqNc-bpl"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block px-6 py-3 border-2 border-orange-500 text-orange-600 font-semibold rounded-full transition-transform duration-300 hover:scale-105 hover:text-white hover:shadow-lg"
           >
-            📄 Ver mi CV
+            📄 Descargar CV
           </a>
+
         </div>
       </section>
 
