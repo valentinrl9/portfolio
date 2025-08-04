@@ -11,6 +11,7 @@ import Contacto from '../components/Contacto'
 
 export default function Home() {
   const [activeSection, setActiveSection] = useState<string | null>(null)
+  const [saludando, setSaludando] = useState(false)
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-orange-950 via-black to-gray-900 text-white flex flex-col items-center px-8 py-16 space-y-24">
@@ -25,21 +26,29 @@ export default function Home() {
           Creativo digital, desarrollador curioso y constructor de experiencias web que marcan.
         </p>
 
-        <div className="relative w-35 h-52 mx-auto rounded-full border-2 border-orange-500 overflow-hidden imagen-hover">
+        {/* Imagen interactiva */}
+        <div
+          onClick={() => setSaludando(prev => !prev)}
+          className="relative w-36 h-52 mx-auto rounded-full border-2 border-orange-500 overflow-hidden cursor-pointer"
+        >
           <img
             src="/img/valentin.png"
             alt="Valentin normal"
-            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-100 hover:opacity-0"
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
+              saludando ? 'opacity-0' : 'opacity-100'
+            }`}
           />
           <img
             src="/img/valentin2.png"
             alt="Valentin saludando"
-            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0 hover:opacity-100"
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
+              saludando ? 'opacity-100' : 'opacity-0'
+            }`}
           />
         </div>
 
-        <p className="text-xl mb-6">
-          Soy desarrollador web en crecimiento, con conocmientos tanto en frontend como en backend...
+        <p className="text-xl mb-6 mt-4">
+          Soy desarrollador web en crecimiento, con conocimientos tanto en frontend como en backend...
         </p>
 
         <div className="flex flex-col sm:flex-row justify-center gap-4 mt-6">
@@ -72,7 +81,6 @@ export default function Home() {
           </button>
         ))}
       </section>
-
 
       {/* 📦 Renderizado condicional de componentes */}
       <section className="w-full max-w-4xl">
