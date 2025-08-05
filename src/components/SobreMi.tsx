@@ -30,24 +30,25 @@ const SobreMi = () => {
         desarrollo como herramienta creativa y funcional.
       </p>
 
-      <p className="mb-4">
-        🚀 Durante mi formación y prácticas he trabajado con lenguajes como 
-        <code className="bg-gray-500 px-1 rounded">HTML5</code>, 
-        <code className="bg-gray-500 px-1 rounded">CSS3</code>, 
-        <code className="bg-gray-500 px-1 rounded">JavaScript</code>, 
-        <code className="bg-gray-500 px-1 rounded">MySQL</code>, 
-        <code className="bg-gray-500 px-1 rounded">C#</code>, 
-        <code className="bg-gray-500 px-1 rounded">PHP</code>, 
-        <code className="bg-gray-500 px-1 rounded">Java</code>, 
-        <code className="bg-gray-500 px-1 rounded">Angular</code>, 
-        <code className="bg-gray-500 px-1 rounded">Symfony</code>, 
-        <code className="bg-gray-500 px-1 rounded">PostgreSQL</code>, 
-        <code className="bg-gray-500 px-1 rounded">GitHub</code> y 
-        <code className="bg-gray-500 px-1 rounded">TailwindCSS</code>.  
-        También he tenido contacto con otras tecnologías por cursos o aprendizaje autodidacta como 
-        <code className="bg-gray-500 px-1 rounded">React</code>, 
-        <code className="bg-gray-500 px-1 rounded">Laravel</code> y 
-        <code className="bg-gray-500 px-1 rounded">Python</code>.  
+      <p>🚀 Durante mi formación y prácticas he trabajado con estos lenguajes.  </p>
+      <div className="flex flex-wrap gap-2 mb-4">
+        <code className="bg-gray-500 px-1 rounded">HTML5</code>
+        <code className="bg-gray-500 px-1 rounded">CSS3</code>
+        <code className="bg-gray-500 px-1 rounded">JavaScript</code>
+        <code className="bg-gray-500 px-1 rounded">MySQL</code>
+        <code className="bg-gray-500 px-1 rounded">C#</code>
+        <code className="bg-gray-500 px-1 rounded">PHP</code>
+        <code className="bg-gray-500 px-1 rounded">Java</code>
+        <code className="bg-gray-500 px-1 rounded">Angular</code>
+        <code className="bg-gray-500 px-1 rounded">Symfony</code>
+        <code className="bg-gray-500 px-1 rounded">PostgreSQL</code>
+        <code className="bg-gray-500 px-1 rounded">GitHub</code>
+        <code className="bg-gray-500 px-1 rounded">TailwindCSS</code>
+        <code className="bg-gray-500 px-1 rounded">React</code>
+        <code className="bg-gray-500 px-1 rounded">Laravel</code>
+        <code className="bg-gray-500 px-1 rounded">Python</code>
+      </div>
+      <p>
         Me defino por mi <span className="font-semibold">adaptabilidad</span>, mi 
         <span className="font-semibold">curiosidad constante</span> y mis 
         <span className="font-semibold"> ganas infinitas de aprender</span>… siempre con paciencia y actitud positiva 😎.
