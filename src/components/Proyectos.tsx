@@ -56,7 +56,6 @@ const Proyectos = () => {
               onMouseEnter={() => setActivoIndex(index)}
               onMouseLeave={() => setActivoIndex(null)}
               onClick={() => toggleActivo(index)}
-              // ... resto del código igual
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -117,7 +116,7 @@ const Proyectos = () => {
                       </a>
                     ) : (
                       <p className="text-sm italic text-gray-500">
-                        Proyecto privado, sin demo disponible.
+                        Proyecto privado (sin demo disponible) o sin desplegar.
                       </p>
                     )}
                   </div>
