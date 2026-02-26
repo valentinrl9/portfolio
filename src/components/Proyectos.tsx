@@ -5,6 +5,16 @@ import Image from 'next/image'
 
 const proyectos = [
   {
+    nombre: 'Pendinails',
+    año: 2025,
+    icono: <FaCode className="text-orange-400 text-3xl" />,
+    descripcion: 'Aplicación de una empresa que se dedica a vender pendientes hechos a partir de uñas sintéticas.',
+    tecnologias: ['React', 'Node.js', 'Tailwind'],
+    resultado: 'Sistema funcional con hero, carrusel de productos y contactos.',
+    url: '', 
+    imagen: '/img/pendinails.png'
+  },
+  {
     nombre: 'Empresa de paquetería (Proyecto Colaborativo)',
     año: 2025,
     icono: <FaCode className="text-orange-400 text-3xl" />,
@@ -27,6 +37,7 @@ const proyectos = [
 ]
 
 const Proyectos = () => {
+  // Especificamos que puede ser un número o null
   const [activoIndex, setActivoIndex] = useState<number | null>(null)
 
   const toggleActivo = (index: number) => {
@@ -37,17 +48,20 @@ const Proyectos = () => {
     <section className="py-12 px-6 bg-black border-4 border-orange-500 rounded-2xl text-white max-w-6xl mx-auto">
       <h2 className="text-3xl font-bold text-center mb-10">🚀 Mis Proyectos</h2>
       <div className="flex flex-col gap-8">
-        {proyectos.map((proyecto, index) => {
+        {proyectos.map((proyecto, index: number) => { // Tipamos el index aquí
           const activo = activoIndex === index
           return (
-            <motion.button
+            <motion.div
               key={index}
+              onMouseEnter={() => setActivoIndex(index)}
+              onMouseLeave={() => setActivoIndex(null)}
               onClick={() => toggleActivo(index)}
+              // ... resto del código igual
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, ease: 'easeOut' }}
-              className={`text-left bg-gray-100 text-gray-800 rounded-xl shadow-lg transition-all duration-500 group overflow-hidden ${
+              className={`text-left bg-gray-100 text-gray-800 rounded-xl shadow-lg transition-all duration-500 cursor-pointer overflow-hidden ${
                 activo ? 'bg-gray-200 py-4' : 'hover:bg-gray-200'
               }`}
             >
@@ -61,7 +75,7 @@ const Proyectos = () => {
 
               <div
                 className={`transition-all duration-500 ease-in-out ${
-                  activo ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0 group-hover:max-h-[1000px] group-hover:opacity-100'
+                  activo ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'
                 }`}
               >
                 <div className="flex flex-col md:flex-row items-start gap-6 p-6">
@@ -96,6 +110,7 @@ const Proyectos = () => {
                         href={proyecto.url}
                         target="_blank"
                         rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
                         className="inline-block bg-orange-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-orange-600 transition"
                       >
                         Ver proyecto 🔍
@@ -108,7 +123,7 @@ const Proyectos = () => {
                   </div>
                 </div>
               </div>
-            </motion.button>
+            </motion.div>
           )
         })}
       </div>
