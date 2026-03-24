@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { FaCode, FaUtensils } from 'react-icons/fa'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
+import { FaCode, FaUtensils, FaCalculator } from 'react-icons/fa'
 
 const proyectos = [
   {
@@ -33,7 +33,18 @@ const proyectos = [
     resultado: 'App responsive y funcional, en continua mejora.',
     url: 'https://que-cocino-hoy.vercel.app',
     imagen: '/img/quecocino.png'
+  },
+  {
+    nombre: 'Suma ABN',
+    año: 2026,
+    icono: <FaCalculator className="text-blue-500 text-3xl" />,
+    descripcion: 'Aplicación educativa basada en el método ABN para practicar sumas paso a paso de forma interactiva.',
+    tecnologias: ['React', 'CSS', 'Canvas-Confetti'],
+    resultado: 'App funcional, intuitiva y en constante evolución.',
+    url: 'https://abn-weld.vercel.app/',
+    imagen: '/img/icon-ABN.png'
   }
+
 ]
 
 const Proyectos = () => {
