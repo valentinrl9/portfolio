@@ -92,92 +92,94 @@ function generateHTML(): string {
   <meta charset="UTF-8">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Segoe UI', Arial, sans-serif; color: #1a1a1a; font-size: 10pt; line-height: 1.4; padding: 28px 40px; }
-    h1 { font-size: 20pt; color: #c2410c; margin-bottom: 2px; }
-    h2 { font-size: 11.5pt; color: #c2410c; border-bottom: 2px solid #c2410c; padding-bottom: 3px; margin: 14px 0 7px; text-transform: uppercase; letter-spacing: 0.4px; }
-    .subtitle { font-size: 11pt; color: #555; margin-bottom: 4px; }
-    .contact { font-size: 9pt; color: #444; margin-bottom: 10px; }
-    .contact a { color: #c2410c; text-decoration: none; }
-    .bio { margin-bottom: 4px; color: #333; font-size: 10pt; }
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      color: #222;
+      font-size: 10.5pt;
+      line-height: 1.45;
+    }
+    h1 {
+      font-size: 20pt;
+      font-weight: 700;
+      color: #1a1a1a;
+      letter-spacing: 0.2px;
+      margin-bottom: 2px;
+    }
+    .subtitle {
+      font-size: 11.5pt;
+      color: #c2410c;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .contact { font-size: 9.5pt; color: #333; line-height: 1.55; margin-bottom: 4px; }
+    h2 {
+      font-size: 11pt;
+      font-weight: 700;
+      color: #1a1a1a;
+      border-bottom: 1.5px solid #c2410c;
+      padding-bottom: 3px;
+      margin: 13px 0 7px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+    .bio { color: #333; font-size: 10.5pt; }
     .entry { margin-bottom: 8px; }
-    .entry-header { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
     .entry-title { font-weight: 700; font-size: 10.5pt; }
-    .entry-date { font-size: 9pt; color: #666; white-space: nowrap; }
-    .entry-sub { font-size: 9.5pt; color: #555; font-style: italic; }
-    .entry p, .entry li { font-size: 9.5pt; margin-top: 1px; }
-    .entry ul { margin: 2px 0 0 16px; }
-    .skills { margin-top: 2px; }
-    .skills li { margin-left: 16px; font-size: 9.5pt; }
-    .techs { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
-    .skill { background: #fed7aa; color: #9a3412; padding: 1px 8px; border-radius: 10px; font-size: 8pt; font-weight: 600; }
-    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 3px 18px; }
-    .cert-item { font-size: 9.5pt; }
-    .cert-item strong { font-weight: 600; }
-    .cert-meta { font-size: 8.5pt; color: #666; }
+    .entry-date { color: #444; }
+    .entry-sub { font-size: 10pt; color: #444; }
+    .entry p, .entry li { font-size: 10pt; color: #333; }
+    .entry ul { margin: 2px 0 0 18px; }
+    .skills { margin-left: 18px; }
+    .skills li { font-size: 10pt; color: #333; }
+    .techs { margin-top: 6px; font-size: 10pt; color: #333; }
+    .curso { font-size: 10pt; margin-bottom: 3px; color: #333; }
   </style>
 </head>
 <body>
   <h1>${persona.nombre}</h1>
-  <div class="subtitle">${persona.titulo}</div>
-  <div class="contact">
-    ${persona.ubicacion} · ${persona.telefono} ·
-    <a href="mailto:${persona.email}">${persona.email}</a><br>
-    <a href="${persona.github}">GitHub</a> ·
-    <a href="${persona.linkedin}">LinkedIn</a> ·
-    <a href="${persona.portfolio}">Portfolio</a>
-  </div>
+  <p class="subtitle">${persona.titulo}</p>
+  <p class="contact">
+    ${persona.ubicacion} · ${persona.telefono} · ${persona.email}<br>
+    GitHub: ${persona.github}<br>
+    LinkedIn: ${persona.linkedin}<br>
+    Portfolio: ${persona.portfolio}
+  </p>
 
   <h2>Perfil profesional</h2>
-  <div class="bio">${perfil}</div>
+  <p class="bio">${perfil}</p>
 
   <h2>Experiencia profesional</h2>
   ${experiencia.map(e => `
   <div class="entry">
-    <div class="entry-header">
-      <span class="entry-title">${e.puesto} — ${e.empresa}</span>
-      <span class="entry-date">${e.fecha}</span>
-    </div>
+    <p><span class="entry-title">${e.puesto} — ${e.empresa}</span> | <span class="entry-date">${e.fecha}</span></p>
     <ul>${e.puntos.map(p => `<li>${p}</li>`).join('')}</ul>
   </div>`).join('')}
 
   <h2>Formación académica</h2>
   ${formacion.map(f => `
   <div class="entry">
-    <div class="entry-header">
-      <span class="entry-title">${f.nombre}</span>
-      <span class="entry-date">${f.fecha}</span>
-    </div>
-    ${f.centro ? `<div class="entry-sub">${f.centro}</div>` : ''}
+    <p><span class="entry-title">${f.nombre}</span> | <span class="entry-date">${f.fecha}</span></p>
+    ${f.centro ? `<p class="entry-sub">${f.centro}</p>` : ''}
     ${f.detalle ? `<p>${f.detalle}</p>` : ''}
   </div>`).join('')}
 
   <h2>Formación complementaria</h2>
-  <div class="two-col">
-    ${cursos.map(c => `
-    <div class="cert-item">
-      <strong>${c.nombre}</strong>
-      ${c.extra ? `<div class="cert-meta">${c.extra}</div>` : ''}
-    </div>`).join('')}
-  </div>
+  ${cursos.map(c => `
+  <p class="curso">${c.nombre}${c.extra ? ` (${c.extra})` : ''}</p>`).join('')}
 
   ${allProjects.length ? `
   <h2>Proyectos</h2>
   ${allProjects.map(p => `
   <div class="entry">
-    <div class="entry-header">
-      <span class="entry-title">${p.nombre}</span>
-      <span class="entry-date">${p.año || ''}</span>
-    </div>
-    <p>${p.descripcion || ''}${p.url ? ` — <a href="${p.url}" style="color:#c2410c;text-decoration:none;font-size:9pt">Ver</a>` : ''}</p>
+    <p><span class="entry-title">${p.nombre}</span>${p.año ? ` | <span class="entry-date">${p.año}</span>` : ''}</p>
+    <p>${p.descripcion || ''}${p.url ? ` ${p.url}` : ''}</p>
   </div>`).join('')}` : ''}
 
   <h2>Habilidades</h2>
   <ul class="skills">
     ${habilidades.map(h => `<li>${h}</li>`).join('')}
   </ul>
-  <div class="techs">
-    ${techs.map(t => `<span class="skill">${t}</span>`).join('')}
-  </div>
+  <p class="techs">${techs.join(' · ')}</p>
 </body>
 </html>`
 }
@@ -226,8 +228,8 @@ async function generatePDF() {
     await page.pdf({
       path: OUTPUT_PATH,
       format: 'A4',
-      margin: { top: '0', right: '0', bottom: '0', left: '0' },
-      printBackground: true,
+      margin: { top: '18mm', right: '16mm', bottom: '18mm', left: '16mm' },
+      printBackground: false,
     })
 
     await browser.close()
