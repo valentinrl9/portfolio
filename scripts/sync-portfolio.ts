@@ -135,16 +135,21 @@ function ensureDir(dir: string) {
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true })
 }
 
-function readExistingData<T>(filepath: string): T[] {
+function readExistingData<T>(filepath: string): T[] | null {
   if (!fs.existsSync(filepath)) return []
   const content = fs.readFileSync(filepath, 'utf-8')
-  const match = content.match(/:\s*\w+\[\]\s*=\s*(\[[\s\S]*\]);?\s*$/)
+  const match = content.match(/export const \w+[\s\S]*?=\s*(\[[\s\S]*\]);?\s*$/)
   if (match) {
     try {
       return JSON.parse(match[1])
     } catch {
-      // fallback
+      console.log(`  ⚠️  No se pudo leer ${path.basename(filepath)}; no se sobrescribe.`)
+      return null
     }
+  }
+  if (content.trim().length > 0) {
+    console.log(`  ⚠️  Formato inesperado en ${path.basename(filepath)}; no se sobrescribe.`)
+    return null
   }
   return []
 }
@@ -168,7 +173,8 @@ interface Certificado {
 
 function syncCertificados(driveFiles: DriveFile[]) {
   const filepath = path.join(DATA_DIR, 'certificados.ts')
-  const existing: Certificado[] = readExistingData(filepath)
+  const existing = readExistingData<Certificado>(filepath)
+  if (existing === null) return
   const existingKeys = new Set(
     existing.map(c => `${c.nombre.toLowerCase()}|${c.url}`)
   )
@@ -222,13 +228,21 @@ interface Titulo {
 
 function syncTitulos(driveFiles: DriveFile[]) {
   const filepath = path.join(DATA_DIR, 'titulos.ts')
-  const existing: Titulo[] = readExistingData(filepath)
+  const existing = readExistingData<Titulo>(filepath)
+  if (existing === null) return
   const existingNames = new Set(existing.map(t => t.nombre.toLowerCase()))
+
+  const looksLikeDaw = (n: string) => {
+    const x = n.toLowerCase().replace(/[^a-z0-9]/g, '')
+    return x.includes('desarrollodeaplicacionesweb') || x.includes('gradosuperiordaw')
+  }
+  const hasDaw = existing.some(t => looksLikeDaw(t.nombre))
 
   let added = 0
   for (const file of driveFiles) {
     const cleanName = file.name.replace(/\.(pdf|png|jpg|jpeg|webp)$/i, '').trim()
     if (existingNames.has(cleanName.toLowerCase())) continue
+    if (hasDaw && looksLikeDaw(cleanName)) continue
 
     existing.push({
       nombre: cleanName,
@@ -273,7 +287,8 @@ function syncGenericFolder(folderName: string, driveFiles: DriveFile[]) {
   const safeName = folderName.toLowerCase().replace(/[^a-z0-9]/g, '-')
   const filename = `drive-${safeName}.ts`
   const filepath = path.join(DATA_DIR, filename)
-  const existing: DriveItem[] = readExistingData(filepath)
+  const existing = readExistingData<DriveItem>(filepath)
+  if (existing === null) return
   const existingNames = new Set(existing.map(i => i.nombre.toLowerCase()))
 
   let added = 0
@@ -347,6 +362,7 @@ async function syncGitHubProjects() {
   // Read existing github projects and merge
   const ghPath = path.join(DATA_DIR, 'github-projects.ts')
   const existingGH = readExistingData<{ github_url: string }>(ghPath)
+  if (existingGH === null) return
   const existingUrls = new Set(existingGH.map(p => p.github_url))
 
   const allGH = [...existingGH]

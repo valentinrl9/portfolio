@@ -4,59 +4,177 @@
   <meta charset="UTF-8">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Segoe UI', Arial, sans-serif; color: #1a1a1a; font-size: 10.5pt; line-height: 1.45; padding: 36px 44px; }
-    h1 { font-size: 22pt; color: #c2410c; margin-bottom: 2px; }
-    h2 { font-size: 12pt; color: #c2410c; border-bottom: 2px solid #c2410c; padding-bottom: 3px; margin: 16px 0 8px; text-transform: uppercase; letter-spacing: 0.5px; }
-    .subtitle { font-size: 11pt; color: #555; margin-bottom: 6px; }
-    .contact { font-size: 9pt; color: #666; margin-bottom: 14px; }
+    body { font-family: 'Segoe UI', Arial, sans-serif; color: #1a1a1a; font-size: 10pt; line-height: 1.4; padding: 28px 40px; }
+    h1 { font-size: 20pt; color: #c2410c; margin-bottom: 2px; }
+    h2 { font-size: 11.5pt; color: #c2410c; border-bottom: 2px solid #c2410c; padding-bottom: 3px; margin: 14px 0 7px; text-transform: uppercase; letter-spacing: 0.4px; }
+    .subtitle { font-size: 11pt; color: #555; margin-bottom: 4px; }
+    .contact { font-size: 9pt; color: #444; margin-bottom: 10px; }
     .contact a { color: #c2410c; text-decoration: none; }
-    .bio { margin-bottom: 14px; color: #333; font-size: 10pt; }
-    .entry { margin-bottom: 10px; }
-    .entry-header { display: flex; justify-content: space-between; align-items: baseline; }
+    .bio { margin-bottom: 4px; color: #333; font-size: 10pt; }
+    .entry { margin-bottom: 8px; }
+    .entry-header { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
     .entry-title { font-weight: 700; font-size: 10.5pt; }
-    .entry-date { font-size: 9pt; color: #888; }
+    .entry-date { font-size: 9pt; color: #666; white-space: nowrap; }
     .entry-sub { font-size: 9.5pt; color: #555; font-style: italic; }
-    .entry p { font-size: 10pt; margin-top: 2px; }
-    .skills { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 4px; }
-    .skill { background: #fed7aa; color: #9a3412; padding: 1px 9px; border-radius: 10px; font-size: 8.5pt; font-weight: 600; }
-    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 20px; }
-    .cert-item, .title-item { font-size: 10pt; margin-bottom: 4px; }
-    .cert-item strong, .title-item strong { font-weight: 600; }
-    .cert-meta { font-size: 9pt; color: #666; }
+    .entry p, .entry li { font-size: 9.5pt; margin-top: 1px; }
+    .entry ul { margin: 2px 0 0 16px; }
+    .skills { margin-top: 2px; }
+    .skills li { margin-left: 16px; font-size: 9.5pt; }
+    .techs { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+    .skill { background: #fed7aa; color: #9a3412; padding: 1px 8px; border-radius: 10px; font-size: 8pt; font-weight: 600; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 3px 18px; }
+    .cert-item { font-size: 9.5pt; }
+    .cert-item strong { font-weight: 600; }
+    .cert-meta { font-size: 8.5pt; color: #666; }
   </style>
 </head>
 <body>
   <h1>Valentín Ruiz León</h1>
   <div class="subtitle">Desarrollador Web FullStack</div>
   <div class="contact">
+    El Ejido (Almería) · 622 121 155 ·
+    <a href="mailto:valentinruizleon@gmail.com">valentinruizleon@gmail.com</a><br>
+    <a href="https://github.com/valentinrl9">GitHub</a> ·
     <a href="https://www.linkedin.com/in/valentin-ruiz-823b31286">LinkedIn</a> ·
-    <a href="https://github.com/valentinrl9">GitHub</a>
+    <a href="https://portfolio-sigma-five-65.vercel.app">Portfolio</a>
   </div>
 
-  <div class="bio">
-    Profesional multidisciplinar con más de 25 años de trayectoria. Desarrollador FullStack con experiencia en React, Angular, Symfony, Node.js y más. Apasionado por transformar ideas en soluciones eficientes.
-  </div>
+  <h2>Perfil profesional</h2>
+  <div class="bio">Profesional multidisciplinar con más de 20 años de experiencia en administración, docencia técnica y gestión comercial en los sectores asegurador y tecnológico. Destaco por mi liderazgo, capacidad de organización, orientación al cliente y continua formación en desarrollo web, finanzas y electrónica. Busco aportar valor en entornos dinámicos mediante soluciones eficientes y trabajo en equipo.</div>
 
-  
-  <h2>Formación</h2>
+  <h2>Experiencia profesional</h2>
   
   <div class="entry">
     <div class="entry-header">
-      <span class="entry-title">Grado superior DAW</span>
-      <span class="entry-date">septiembre de 2026</span>
+      <span class="entry-title">Desarrollador FullStack — CodeArts Solutions</span>
+      <span class="entry-date">Junio – Julio 2025</span>
     </div>
+    <ul><li>Contrato en prácticas.</li><li>Onboarding individual para tomar contacto con Angular, Symfony y GitHub.</li><li>Desarrollo frontend (Angular) y backend (Symfony) con cliente real.</li><li>Trabajo con base de datos PostgreSQL y control de versiones con GitHub.</li></ul>
+  </div>
+  <div class="entry">
+    <div class="entry-header">
+      <span class="entry-title">Administrativo e Inspector de Zona — SANTALUCIA</span>
+      <span class="entry-date">2005 – Actualidad</span>
+    </div>
+    <ul><li>Coordinación de procesos administrativos y comerciales en zona asignada.</li><li>Atención personalizada a clientes y gestión documental.</li><li>Supervisión de equipos y cumplimiento de objetivos.</li><li>Gerente de oficina en Salobreña durante 4,5 años (equipo de 5 personas).</li></ul>
+  </div>
+  <div class="entry">
+    <div class="entry-header">
+      <span class="entry-title">Profesor de Informática y Técnico en Hardware — MEGAPAL</span>
+      <span class="entry-date">2000 – 2005</span>
+    </div>
+    <ul><li>Formación en software ofimático y técnico.</li><li>Reparación y configuración de equipos informáticos.</li><li>Instalación y mantenimiento de redes locales.</li></ul>
+  </div>
+  <div class="entry">
+    <div class="entry-header">
+      <span class="entry-title">Instalador de Sistemas Eléctricos y Antenas — COTELSUR</span>
+      <span class="entry-date">1997 – 1998</span>
+    </div>
+    <ul><li>Montaje de instalaciones eléctricas industriales y domésticas.</li><li>Instalación de antenas digitales y sistemas de telecomunicaciones.</li></ul>
+  </div>
+
+  <h2>Formación académica</h2>
+  
+  <div class="entry">
+    <div class="entry-header">
+      <span class="entry-title">Técnico Superior en Desarrollo de Aplicaciones Web</span>
+      <span class="entry-date">2022 – 2025</span>
+    </div>
+    <div class="entry-sub">ILERNA Online</div>
+    <p>Programación: Java, C#, PHP, JavaScript, HTML5, CSS3. Bases de datos: MySQL, Oracle. Redes, metodologías ágiles y desarrollo de proyectos web.</p>
+  </div>
+  <div class="entry">
+    <div class="entry-header">
+      <span class="entry-title">Técnico Superior en Administración y Finanzas</span>
+      <span class="entry-date">2001</span>
+    </div>
+    <div class="entry-sub">I.E.S. San Luis Rey</div>
+    
+  </div>
+  <div class="entry">
+    <div class="entry-header">
+      <span class="entry-title">Técnico Especialista en Electrónica Industrial</span>
+      <span class="entry-date">1997</span>
+    </div>
+    <div class="entry-sub">I.E.S. San Luis Rey</div>
     
   </div>
 
+  <h2>Formación complementaria</h2>
+  <div class="two-col">
+    
+    <div class="cert-item">
+      <strong>Principios básicos del Big Data</strong>
+      <div class="cert-meta">20h</div>
+    </div>
+    <div class="cert-item">
+      <strong>Programación con JavaScript</strong>
+      <div class="cert-meta">40h</div>
+    </div>
+    <div class="cert-item">
+      <strong>Diseño Web con HTML5 y CSS</strong>
+      <div class="cert-meta">30h</div>
+    </div>
+    <div class="cert-item">
+      <strong>WordPress básico</strong>
+      <div class="cert-meta">30h</div>
+    </div>
+    <div class="cert-item">
+      <strong>Curso EOI Desafío Emprendedor</strong>
+      <div class="cert-meta">septiembre de 2026</div>
+    </div>
+    <div class="cert-item">
+      <strong>Certificado Hacking ético 6h</strong>
+      <div class="cert-meta">abril de 2026</div>
+    </div>
+    <div class="cert-item">
+      <strong>Certificado Inicio IA</strong>
+      <div class="cert-meta">octubre de 2025</div>
+    </div>
+    <div class="cert-item">
+      <strong>Drupal 10 (30 horas)</strong>
+      <div class="cert-meta">septiembre de 2025</div>
+    </div>
+    <div class="cert-item">
+      <strong>Certificado Inicio Drupal 11</strong>
+      <div class="cert-meta">agosto de 2025</div>
+    </div>
+    <div class="cert-item">
+      <strong>Programación Java Standard 40h</strong>
+      <div class="cert-meta">diciembre de 2022</div>
+    </div>
+  </div>
+
   
-  <h2>Proyectos destacados</h2>
+  <h2>Proyectos</h2>
   
   <div class="entry">
     <div class="entry-header">
       <span class="entry-title">Pendinails</span>
+      <span class="entry-date">2025</span>
+    </div>
+    <p>Aplicación de una empresa que se dedica a vender pendientes hechos a partir de uñas sintéticas. — <a href="https://github.com/valentinrl9/pendinails" style="color:#c2410c;text-decoration:none;font-size:9pt">Ver</a></p>
+  </div>
+  <div class="entry">
+    <div class="entry-header">
+      <span class="entry-title">Empresa de paquetería (Proyecto Colaborativo)</span>
+      <span class="entry-date">2025</span>
+    </div>
+    <p>App desarrollada en equipo durante mis prácticas en CodeArts Solutions...</p>
+  </div>
+  <div class="entry">
+    <div class="entry-header">
+      <span class="entry-title">Recetas del mundo</span>
+      <span class="entry-date">2025</span>
+    </div>
+    <p>Aplicación personal para encontrar recetas. Tecnología y cocina fusionadas... — <a href="https://que-cocino-hoy.vercel.app" style="color:#c2410c;text-decoration:none;font-size:9pt">Ver</a></p>
+  </div>
+  <div class="entry">
+    <div class="entry-header">
+      <span class="entry-title">Suma ABN</span>
       <span class="entry-date">2026</span>
     </div>
-    <p>Web de catálogo de pendinails — <a href="https://github.com/valentinrl9/pendinails" style="color:#c2410c;text-decoration:none;font-size:9pt">Ver</a></p>
+    <p>Aplicación educativa basada en el método ABN para practicar sumas paso a paso de forma interactiva. — <a href="https://abn-weld.vercel.app/" style="color:#c2410c;text-decoration:none;font-size:9pt">Ver</a></p>
   </div>
   <div class="entry">
     <div class="entry-header">
@@ -86,48 +204,13 @@
     </div>
     <p>Restas con método ABN — <a href="https://abn-restas.vercel.app" style="color:#c2410c;text-decoration:none;font-size:9pt">Ver</a></p>
   </div>
-  <div class="entry">
-    <div class="entry-header">
-      <span class="entry-title">Que Cocino Hoy</span>
-      <span class="entry-date">2025</span>
-    </div>
-    <p>Aplicación para buscar recetas de cocina en función de los ingrediente que tengo en ese momento. — <a href="https://que-cocino-hoy.vercel.app" style="color:#c2410c;text-decoration:none;font-size:9pt">Ver</a></p>
-  </div>
 
-  
-  <h2>Certificados</h2>
-  <div class="two-col">
-    
-    <div class="cert-item">
-      <strong>Curso EOI Desafío Emprendedor</strong>
-      <div class="cert-meta">septiembre de 2026</div>
-    </div>
-    <div class="cert-item">
-      <strong>Certificado Hacking ético 6h</strong>
-      <div class="cert-meta">abril de 2026</div>
-    </div>
-    <div class="cert-item">
-      <strong>Certificado Inicio IA</strong>
-      <div class="cert-meta">octubre de 2025</div>
-    </div>
-    <div class="cert-item">
-      <strong>Drupal 10 (30 horas)</strong>
-      <div class="cert-meta">septiembre de 2025</div>
-    </div>
-    <div class="cert-item">
-      <strong>Certificado Inicio Drupal 11</strong>
-      <div class="cert-meta">agosto de 2025</div>
-    </div>
-    <div class="cert-item">
-      <strong>Programación Java Standard 40h</strong>
-      <div class="cert-meta">diciembre de 2022</div>
-    </div>
-  </div>
-
-  
-  <h2>Habilidades técnicas</h2>
-  <div class="skills">
-    <span class="skill">PHP</span><span class="skill">TypeScript</span><span class="skill">JavaScript</span>
+  <h2>Habilidades</h2>
+  <ul class="skills">
+    <li>Liderazgo y gestión de equipos</li><li>Desarrollo web (HTML, CSS, JavaScript, PHP, React, Angular, Symfony)</li><li>Administración financiera y documental</li><li>Resolución de incidencias técnicas</li><li>Atención al cliente y comunicación efectiva</li><li>Metodologías ágiles (Scrum, Kanban)</li>
+  </ul>
+  <div class="techs">
+    <span class="skill">HTML5</span><span class="skill">CSS3</span><span class="skill">JavaScript</span><span class="skill">TypeScript</span><span class="skill">PHP</span><span class="skill">Java</span><span class="skill">C#</span><span class="skill">React</span><span class="skill">Angular</span><span class="skill">Symfony</span><span class="skill">Node.js</span><span class="skill">MySQL</span><span class="skill">PostgreSQL</span><span class="skill">Oracle</span><span class="skill">TailwindCSS</span><span class="skill">GitHub</span><span class="skill">Tailwind</span><span class="skill">CSS</span><span class="skill">Canvas-Confetti</span>
   </div>
 </body>
 </html>

@@ -3,6 +3,7 @@ import { githubProjects } from "./github-projects";
 import { certificados, type Certificado } from "./certificados";
 import { titulos, type Titulo } from "./titulos";
 import { proyectosOcultos } from "./proyectos-ocultos";
+import { formacionBase, cursosComplementarios } from "./cv-base";
 
 export type ProyectoDisplay = Proyecto & {
   fuente?: "manual" | "github";
@@ -119,6 +120,14 @@ export function getCertificados(): Certificado[] {
 
 export function getCertificadosAgrupados(): CertificadoGrupo[] {
   const groups = new Map<string, CertificadoGrupo>();
+  for (const c of cursosComplementarios) {
+    groups.set(c.nombre.toLowerCase(), {
+      nombre: c.nombre,
+      emisor: "",
+      fecha: c.duracion,
+      urls: [],
+    });
+  }
   for (const c of getCertificados()) {
     const key = c.nombre.toLowerCase();
     const existing = groups.get(key);
@@ -136,8 +145,32 @@ export function getCertificadosAgrupados(): CertificadoGrupo[] {
   return [...groups.values()];
 }
 
+function sameTitulo(a: string, b: string) {
+  const na = normalizeName(a);
+  const nb = normalizeName(b);
+  if (na === nb) return true;
+  const daw = (n: string) =>
+    n.includes("desarrollodeaplicacionesweb") || n.includes("gradosuperiordaw");
+  return daw(na) && daw(nb);
+}
+
 export function getTitulos(): Titulo[] {
-  return [...titulos].sort((a, b) => parseFecha(b.fecha) - parseFecha(a.fecha));
+  const merged: Titulo[] = formacionBase.map((f) => ({
+    nombre: f.nombre,
+    centro: f.centro,
+    fecha: f.fecha,
+    url: "",
+    fuente: "manual" as const,
+  }));
+  for (const t of titulos) {
+    const target = merged.find((m) => sameTitulo(m.nombre, t.nombre));
+    if (target) {
+      if (t.url && !target.url) target.url = t.url;
+      continue;
+    }
+    merged.push(t);
+  }
+  return merged;
 }
 
 export function hasFormacion(): boolean {

@@ -1,14 +1,26 @@
 /**
- * Generates CV PDF from existing data files.
+ * Generates CV PDF from the static CV base + synced Drive/GitHub data.
+ * Base content is never deleted. New courses and projects are appended.
  * Output: public/cv/CV Valen {YEAR}.pdf
- *
- * Reads src/data/ files directly — no Sheet needed.
  */
 
 import * as fs from 'fs'
 import * as path from 'path'
+import {
+  persona,
+  perfil,
+  experiencia,
+  formacionBase,
+  cursosComplementarios,
+  habilidades,
+  tecnologiasBase,
+} from '../src/data/cv-base'
+import { proyectos } from '../src/data/proyectos'
+import { githubProjects } from '../src/data/github-projects'
+import { certificados } from '../src/data/certificados'
+import { titulos } from '../src/data/titulos'
+import { proyectosOcultos } from '../src/data/proyectos-ocultos'
 
-const DATA_DIR = path.join(__dirname, '..', 'src', 'data')
 const YEAR = new Date().getFullYear()
 const PDF_NAME = `CV Valen ${YEAR}.pdf`
 const OUTPUT_DIR = path.join(__dirname, '..', 'public', 'cv')
@@ -18,54 +30,61 @@ function ensureDir(dir: string) {
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true })
 }
 
-function tryReadExport<T>(filename: string): T[] {
-  const filepath = path.join(DATA_DIR, filename)
-  if (!fs.existsSync(filepath)) return []
-  const content = fs.readFileSync(filepath, 'utf-8')
-  const match = content.match(/:\s*\w+\[\]\s*=\s*(\[[\s\S]*?\]);?\s*$/)
-  if (match) {
-    try { return JSON.parse(match[1]) } catch { /* skip */ }
-  }
-  return []
+function normalize(name: string) {
+  return name.toLowerCase().replace(/[^a-z0-9áéíóúñ]/gi, '')
 }
 
-// Read all data
-interface Proyecto { nombre: string; año: number; tecnologias: string[]; descripcion: string; url: string }
-interface Certificado { nombre: string; emisor: string; fecha: string }
-interface Titulo { nombre: string; centro: string; fecha: string }
+function isSimilar(a: string, b: string) {
+  const na = normalize(a)
+  const nb = normalize(b)
+  return na === nb || na.includes(nb) || nb.includes(na)
+}
 
 function generateHTML(): string {
-  const proyectos = tryReadExport<Proyecto>('proyectos.ts')
-  const githubProjects = tryReadExport<Proyecto>('github-projects.ts')
-  const certificados = tryReadExport<Certificado>('certificados.ts')
-  const titulos = tryReadExport<Titulo>('titulos.ts')
-  const hidden = tryReadExport<string>('proyectos-ocultos.ts')
-  const hiddenNames = new Set(
-    (hidden.length ? hidden : ['AgroPlaga AI', 'Proyecto Agro Data Consulting', 'EliGRNails', 'Portfolio', 'ABN'])
-      .map(n => n.toLowerCase().replace(/[^a-z0-9]/g, ''))
-  )
-  const normalize = (n: string) => n.toLowerCase().replace(/[^a-z0-9]/g, '')
+  const hiddenNames = new Set(proyectosOcultos.map(normalize))
   const manualNames = new Set(proyectos.map(p => normalize(p.nombre)))
   const manualUrls = new Set(proyectos.map(p => p.url).filter(Boolean).map(u => u.toLowerCase()))
 
-  // Combine manual + github projects, sorted by year desc
   const allProjects = [
     ...proyectos,
     ...githubProjects.filter(p => {
       const name = normalize(p.nombre || '')
       if (hiddenNames.has(name)) return false
-      if (manualNames.has(name)) return false
+      if ([...manualNames].some(m => isSimilar(m, name))) return false
       if (p.url && manualUrls.has(p.url.toLowerCase())) return false
       return true
     }),
   ]
-    .filter(p => !hiddenNames.has(normalize(p.nombre || '')))
-    .sort((a, b) => (b.año || 0) - (a.año || 0))
-    .slice(0, 8) // Top 8 for the CV
 
-  // Collect all unique technologies
-  const allTechs = [...new Set(allProjects.flatMap(p => p.tecnologias || []))]
-  const certUnicos = [...new Map(certificados.map(c => [c.nombre, c])).values()]
+  const formacion = [...formacionBase]
+  for (const t of titulos) {
+    if (formacion.some(f => isSimilar(f.nombre, t.nombre))) continue
+    formacion.push({
+      nombre: t.nombre,
+      centro: t.centro,
+      fecha: t.fecha,
+    })
+  }
+
+  const cursos = [
+    ...cursosComplementarios.map(c => ({
+      nombre: c.nombre,
+      extra: c.duracion,
+    })),
+  ]
+  for (const c of certificados) {
+    if (cursos.some(x => isSimilar(x.nombre, c.nombre))) continue
+    if (formacion.some(f => isSimilar(f.nombre, c.nombre))) continue
+    cursos.push({
+      nombre: c.nombre,
+      extra: [c.emisor, c.fecha].filter(Boolean).join(' · '),
+    })
+  }
+
+  const techs = [...new Set([
+    ...tecnologiasBase,
+    ...allProjects.flatMap(p => p.tecnologias || []),
+  ])]
 
   return `<!DOCTYPE html>
 <html lang="es">
@@ -73,52 +92,76 @@ function generateHTML(): string {
   <meta charset="UTF-8">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Segoe UI', Arial, sans-serif; color: #1a1a1a; font-size: 10.5pt; line-height: 1.45; padding: 36px 44px; }
-    h1 { font-size: 22pt; color: #c2410c; margin-bottom: 2px; }
-    h2 { font-size: 12pt; color: #c2410c; border-bottom: 2px solid #c2410c; padding-bottom: 3px; margin: 16px 0 8px; text-transform: uppercase; letter-spacing: 0.5px; }
-    .subtitle { font-size: 11pt; color: #555; margin-bottom: 6px; }
-    .contact { font-size: 9pt; color: #666; margin-bottom: 14px; }
+    body { font-family: 'Segoe UI', Arial, sans-serif; color: #1a1a1a; font-size: 10pt; line-height: 1.4; padding: 28px 40px; }
+    h1 { font-size: 20pt; color: #c2410c; margin-bottom: 2px; }
+    h2 { font-size: 11.5pt; color: #c2410c; border-bottom: 2px solid #c2410c; padding-bottom: 3px; margin: 14px 0 7px; text-transform: uppercase; letter-spacing: 0.4px; }
+    .subtitle { font-size: 11pt; color: #555; margin-bottom: 4px; }
+    .contact { font-size: 9pt; color: #444; margin-bottom: 10px; }
     .contact a { color: #c2410c; text-decoration: none; }
-    .bio { margin-bottom: 14px; color: #333; font-size: 10pt; }
-    .entry { margin-bottom: 10px; }
-    .entry-header { display: flex; justify-content: space-between; align-items: baseline; }
+    .bio { margin-bottom: 4px; color: #333; font-size: 10pt; }
+    .entry { margin-bottom: 8px; }
+    .entry-header { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
     .entry-title { font-weight: 700; font-size: 10.5pt; }
-    .entry-date { font-size: 9pt; color: #888; }
+    .entry-date { font-size: 9pt; color: #666; white-space: nowrap; }
     .entry-sub { font-size: 9.5pt; color: #555; font-style: italic; }
-    .entry p { font-size: 10pt; margin-top: 2px; }
-    .skills { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 4px; }
-    .skill { background: #fed7aa; color: #9a3412; padding: 1px 9px; border-radius: 10px; font-size: 8.5pt; font-weight: 600; }
-    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 20px; }
-    .cert-item, .title-item { font-size: 10pt; margin-bottom: 4px; }
-    .cert-item strong, .title-item strong { font-weight: 600; }
-    .cert-meta { font-size: 9pt; color: #666; }
+    .entry p, .entry li { font-size: 9.5pt; margin-top: 1px; }
+    .entry ul { margin: 2px 0 0 16px; }
+    .skills { margin-top: 2px; }
+    .skills li { margin-left: 16px; font-size: 9.5pt; }
+    .techs { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+    .skill { background: #fed7aa; color: #9a3412; padding: 1px 8px; border-radius: 10px; font-size: 8pt; font-weight: 600; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 3px 18px; }
+    .cert-item { font-size: 9.5pt; }
+    .cert-item strong { font-weight: 600; }
+    .cert-meta { font-size: 8.5pt; color: #666; }
   </style>
 </head>
 <body>
-  <h1>Valentín Ruiz León</h1>
-  <div class="subtitle">Desarrollador Web FullStack</div>
+  <h1>${persona.nombre}</h1>
+  <div class="subtitle">${persona.titulo}</div>
   <div class="contact">
-    <a href="https://www.linkedin.com/in/valentin-ruiz-823b31286">LinkedIn</a> ·
-    <a href="https://github.com/valentinrl9">GitHub</a>
+    ${persona.ubicacion} · ${persona.telefono} ·
+    <a href="mailto:${persona.email}">${persona.email}</a><br>
+    <a href="${persona.github}">GitHub</a> ·
+    <a href="${persona.linkedin}">LinkedIn</a> ·
+    <a href="${persona.portfolio}">Portfolio</a>
   </div>
 
-  <div class="bio">
-    Profesional multidisciplinar con más de 25 años de trayectoria. Desarrollador FullStack con experiencia en React, Angular, Symfony, Node.js y más. Apasionado por transformar ideas en soluciones eficientes.
-  </div>
+  <h2>Perfil profesional</h2>
+  <div class="bio">${perfil}</div>
 
-  ${titulos.length ? `
-  <h2>Formación</h2>
-  ${titulos.map(t => `
+  <h2>Experiencia profesional</h2>
+  ${experiencia.map(e => `
   <div class="entry">
     <div class="entry-header">
-      <span class="entry-title">${t.nombre}</span>
-      <span class="entry-date">${t.fecha}</span>
+      <span class="entry-title">${e.puesto} — ${e.empresa}</span>
+      <span class="entry-date">${e.fecha}</span>
     </div>
-    ${t.centro ? `<div class="entry-sub">${t.centro}</div>` : ''}
-  </div>`).join('')}` : ''}
+    <ul>${e.puntos.map(p => `<li>${p}</li>`).join('')}</ul>
+  </div>`).join('')}
+
+  <h2>Formación académica</h2>
+  ${formacion.map(f => `
+  <div class="entry">
+    <div class="entry-header">
+      <span class="entry-title">${f.nombre}</span>
+      <span class="entry-date">${f.fecha}</span>
+    </div>
+    ${f.centro ? `<div class="entry-sub">${f.centro}</div>` : ''}
+    ${f.detalle ? `<p>${f.detalle}</p>` : ''}
+  </div>`).join('')}
+
+  <h2>Formación complementaria</h2>
+  <div class="two-col">
+    ${cursos.map(c => `
+    <div class="cert-item">
+      <strong>${c.nombre}</strong>
+      ${c.extra ? `<div class="cert-meta">${c.extra}</div>` : ''}
+    </div>`).join('')}
+  </div>
 
   ${allProjects.length ? `
-  <h2>Proyectos destacados</h2>
+  <h2>Proyectos</h2>
   ${allProjects.map(p => `
   <div class="entry">
     <div class="entry-header">
@@ -128,21 +171,13 @@ function generateHTML(): string {
     <p>${p.descripcion || ''}${p.url ? ` — <a href="${p.url}" style="color:#c2410c;text-decoration:none;font-size:9pt">Ver</a>` : ''}</p>
   </div>`).join('')}` : ''}
 
-  ${certUnicos.length ? `
-  <h2>Certificados</h2>
-  <div class="two-col">
-    ${certUnicos.map(c => `
-    <div class="cert-item">
-      <strong>${c.nombre}</strong>
-      <div class="cert-meta">${[c.emisor, c.fecha].filter(Boolean).join(' · ')}</div>
-    </div>`).join('')}
-  </div>` : ''}
-
-  ${allTechs.length ? `
-  <h2>Habilidades técnicas</h2>
-  <div class="skills">
-    ${allTechs.map(t => `<span class="skill">${t}</span>`).join('')}
-  </div>` : ''}
+  <h2>Habilidades</h2>
+  <ul class="skills">
+    ${habilidades.map(h => `<li>${h}</li>`).join('')}
+  </ul>
+  <div class="techs">
+    ${techs.map(t => `<span class="skill">${t}</span>`).join('')}
+  </div>
 </body>
 </html>`
 }
@@ -152,8 +187,6 @@ async function generatePDF() {
 
   const html = generateHTML()
   ensureDir(OUTPUT_DIR)
-
-  // Save HTML preview
   fs.writeFileSync(path.join(OUTPUT_DIR, 'cv-preview.html'), html, 'utf-8')
 
   try {
@@ -178,7 +211,6 @@ async function generatePDF() {
 
     if (!executablePath) {
       console.log('⚠️  Chrome not found. HTML preview saved.')
-      console.log('   Open public/cv/cv-preview.html and print to PDF manually.')
       return
     }
 
@@ -190,15 +222,6 @@ async function generatePDF() {
 
     const page = await browser.newPage()
     await page.setContent(html, { waitUntil: 'load' })
-
-    // Remove old CVs from other years
-    const existingFiles = fs.readdirSync(OUTPUT_DIR)
-    for (const f of existingFiles) {
-      if (f.startsWith('CV Valen') && f.endsWith('.pdf') && f !== PDF_NAME) {
-        fs.unlinkSync(path.join(OUTPUT_DIR, f))
-        console.log(`  🗑️ Removed old: ${f}`)
-      }
-    }
 
     await page.pdf({
       path: OUTPUT_PATH,
