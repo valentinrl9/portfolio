@@ -1,0 +1,59 @@
+name: Sync Portfolio Data
+
+on:
+  # Cada lunes a las 8:00 UTC (10:00 hora España)
+  schedule:
+    - cron: '0 8 * * 1'
+  # Permitir ejecución manual desde GitHub
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install tsx runner
+        run: npm install -g tsx
+
+      - name: Sync data from Google Drive + GitHub
+        env:
+          GOOGLE_SERVICE_ACCOUNT_EMAIL: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_EMAIL }}
+          GOOGLE_PRIVATE_KEY: ${{ secrets.GOOGLE_PRIVATE_KEY }}
+          GOOGLE_DRIVE_FOLDER_ID: ${{ secrets.GOOGLE_DRIVE_FOLDER_ID }}
+          GITHUB_USERNAME: valentinrl9
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: tsx scripts/sync-portfolio.ts
+
+      - name: Generate CV PDF
+        env:
+          CI: true
+        run: tsx scripts/generate-cv-pdf.ts
+
+      - name: Check for changes
+        id: changes
+        run: |
+          git diff --quiet && echo "changed=false" >> $GITHUB_OUTPUT || echo "changed=true" >> $GITHUB_OUTPUT
+
+      - name: Commit and push changes
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          git config user.name "Portfolio Bot"
+          git config user.email "bot@portfolio.dev"
+          git add src/data/ public/cv/
+          git commit -m "🔄 Auto-sync portfolio data [$(date -u +'%Y-%m-%d')]"
+          git push

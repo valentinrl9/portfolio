@@ -6,11 +6,17 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "sync": "tsx scripts/sync-portfolio.ts",
+    "generate-cv": "tsx scripts/generate-cv-pdf.ts",
+    "sync:all": "tsx scripts/sync-portfolio.ts && tsx scripts/generate-cv-pdf.ts"
   },
   "dependencies": {
+    "@sparticuz/chromium-min": "^149.0.0",
     "framer-motion": "^12.23.12",
+    "googleapis": "^178.0.0",
     "next": "15.4.10",
+    "puppeteer-core": "^25.10.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-icons": "^5.5.0"
@@ -21,6 +27,7 @@
     "@types/react": "^19.1.9",
     "@types/react-dom": "^19",
     "tailwindcss": "^4",
+    "tsx": "^4.23.13",
     "typescript": "^5"
   }
 }
