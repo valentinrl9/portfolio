@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 import SobreMi from './SobreMi'
 import Formacion from './Formacion'
 import Proyectos from './Proyectos'
@@ -46,7 +47,26 @@ export default function Navigation() {
 
   return (
     <>
-      <section className="text-center max-w-2xl">
+      <a
+        href="#top"
+        onClick={(e) => {
+          e.preventDefault()
+          window.scrollTo({ top: 0, behavior: 'smooth' })
+        }}
+        className="absolute top-5 left-5 z-30 block w-16 sm:w-20 focus:outline-none focus:ring-2 focus:ring-orange-400 rounded-md"
+        aria-label="Ir al inicio"
+      >
+        <Image
+          src="/img/logo-v.png"
+          alt="Logo de Valentín Ruiz León"
+          width={565}
+          height={456}
+          priority
+          className="w-full h-auto"
+        />
+      </a>
+
+      <section id="top" className="text-center max-w-2xl w-full">
         <h1 className="text-5xl font-extrabold mb-4 tracking-tight">
           ¡Hola! Soy <span className="text-orange-400">Valentín</span>
         </h1>

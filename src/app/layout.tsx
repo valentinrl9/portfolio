@@ -33,12 +33,21 @@ export const metadata: Metadata = {
     siteName: "Portfolio de Valentín",
     locale: "es_ES",
     type: "website",
+    images: [
+      {
+        url: "/img/logo-v.png",
+        width: 565,
+        height: 456,
+        alt: "Logo de Valentín Ruiz León",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Valentín Ruiz León — Desarrollador Web FullStack",
     description:
       "Portfolio profesional. React, Angular, Symfony, Node.js y más.",
+    images: ["/img/logo-v.png"],
   },
   robots: {
     index: true,
